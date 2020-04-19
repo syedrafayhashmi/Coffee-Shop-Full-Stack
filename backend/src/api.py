@@ -7,26 +7,31 @@ from flask_cors import CORS
 from .database.models import db_drop_and_create_all, setup_db, Drink
 from .auth.auth import AuthError, requires_auth
 
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 # App Setup
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 
 app = Flask(__name__)
 setup_db(app)
 CORS(app)
 db_drop_and_create_all()
 
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 # Custom Functions
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
+
 
 def get_error_message(error, default_text):
+
     '''Returns default error text or custom error message (if not applicable)
     *Input:
-        * <error> system generated error message which contains a description message
-        * <string> default text to be used as error message if Error has no specific message
+        * <error> system generated error message which contains a description
+        message
+        * <string> default text to be used as error message if Error has no 
+        specific message
     *Output:
-        * <string> specific error message or default text(if no specific message is given)
+        * <string> specific error message or default text(if no specific
+        message is given)
 
     '''
     try:
@@ -39,7 +44,8 @@ def get_error_message(error, default_text):
 def get_all_drinks(recipe_format):
     '''Queries a formatted list of drinks with long or short recipe description
     *Input:
-        <string> recipe_format "long" or "short", depending on how detailled the informations are needed
+        <string> recipe_format "long" or "short", depending on how detailled 
+        the informations are needed
     *Output:
         <list> Formatted instances of Drinks
 
@@ -54,7 +60,9 @@ def get_all_drinks(recipe_format):
     elif recipe_format.lower() == 'long':
         all_drinks_formatted = [drink.long() for drink in all_drinks]
     else:
-        return abort(500, {'message': 'bad formatted function call. recipe_format needs to be "short" or "long".'})
+        return abort(500, {'message':
+        """bad formatted function call. 
+        recipe_format needs to be "short" or "long"."""})
 
     if len(all_drinks_formatted) == 0:
         abort(404, {'message': 'no drinks found in database.'})
@@ -62,9 +70,9 @@ def get_all_drinks(recipe_format):
     # Return formatted list of drinks
     return all_drinks_formatted
 
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 # Endpoints
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 
 # TODO DONE implement endpoint GET /drinks
 
@@ -164,9 +172,9 @@ def delete_drinks(payload, drink_id):
     'delete': drink_id
     })
 
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 # Error Handlers
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 
 
 # TODO DONE implement error handlers using the @app.errorhandler(error) decorator
